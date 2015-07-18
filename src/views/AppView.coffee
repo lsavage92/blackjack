@@ -11,11 +11,15 @@ class window.AppView extends Backbone.View
       @model.get('game').get('playerHand').hit()
       if @model.get('game').bust(@model.get('game').get('playerHand'))
         console.log "You have busted!"
+        @model.get('game').newHand()
+
     'click .stand-button': ->
       @model.get('game').get('playerHand').stand()
 
   initialize: ->
     @render()
+    @model.get('game').on('newHand', =>
+      @render())
 
   render: ->
     @$el.children().detach()

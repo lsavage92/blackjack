@@ -1,6 +1,5 @@
 class window.Hand extends Backbone.Collection
   model: Card
-
   #set's initial properties for cards in hand(array), this deck instance, whether it's a dealer or not
   initialize: (array, @deck, @isDealer) ->
 

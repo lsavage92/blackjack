@@ -2,7 +2,9 @@ class window.Game extends Backbone.Model
   initialize: ->
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer() #creates new player hand via deck
+    console.log " original playerHand", @get 'playerHand'
     @set 'dealerHand', deck.dealDealer() #creates new dealer hand via deck
+    console.log " original dealerHand", @get 'dealerHand'
 
     @get('playerHand').on("stand", =>
       console.log 'stand'
@@ -28,9 +30,15 @@ class window.Game extends Backbone.Model
     dealer = @get('dealerHand')
     player = @get('playerHand')
 
-    if @bust player then console.log 'Player Bust'
-    else if @bust dealer then console.log 'Dealer bust, player win'
-    else if @tie(player, dealer) then console.log 'Push!'
+    if @bust player
+      alert 'Player Bust, Dealer Win. Press okay to deal'
+      @newHand()
+    else if @bust dealer
+      alert 'Dealer Bust, Player Wins! Press okay to deal'
+      @newHand()
+    else if @tie(player, dealer)
+      alert 'Push! Press okay to deal'
+      @newHand()
     else @determineWinner(player, dealer)
 
   bust: (hand) ->
@@ -39,10 +47,19 @@ class window.Game extends Backbone.Model
 
   determineWinner: (player, dealer) ->
     if player.scores()[0] > dealer.scores()[0]
-      console.log "You have won!"
+      alert "Player Wins! Press okay to deal"
+      @newHand()
     else
-      console.log "You have lost!"
+      alert "You have lost. Press okay to deal"
+      @newHand()
 
   tie: (player, dealer) ->
     if player.scores()[0] == dealer.scores()[0] then return true
 
+  newHand: ->
+    @set 'playerHand', @get('deck').dealPlayer() #creates new player hand via deck
+    @set 'dealerHand', @get('deck').dealDealer() #creates new dealer hand via deck
+    @trigger('newHand',@)
+
+    @get('playerHand').on("stand", =>
+      @automateDealer())

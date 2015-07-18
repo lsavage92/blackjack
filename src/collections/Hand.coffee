@@ -5,6 +5,9 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
+    if @deck.length == 1
+      @deck = new Deck()
+      console.log "Shuffling new deck"
     nextCard = @deck.pop()
     @add(nextCard)
 

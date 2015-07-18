@@ -29,16 +29,20 @@ class window.Game extends Backbone.Model
     player = @get('playerHand')
 
     if @bust player then console.log 'Player Bust'
-    if @bust dealer then console.log 'Dealer bust, player win'
-
-    if player.scores()[0] > dealer.scores()[0]
-      console.log 'You have won!'
-    else if player.scores()[0] == dealer.scores()[0]
-      console.log 'Push!'
-    else
-      console.log 'You have lost!'
+    else if @bust dealer then console.log 'Dealer bust, player win'
+    else if @tie(player, dealer) then console.log 'Push!'
+    else @determineWinner(player, dealer)
 
   bust: (hand) ->
     if hand.scores()[0] > 21 then true
     else false
+
+  determineWinner: (player, dealer) ->
+    if player.scores()[0] > dealer.scores()[0]
+      console.log "You have won!"
+    else
+      console.log "You have lost!"
+
+  tie: (player, dealer) ->
+    if player.scores()[0] == dealer.scores()[0] then return true
 

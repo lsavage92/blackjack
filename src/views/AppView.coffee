@@ -9,7 +9,9 @@ class window.AppView extends Backbone.View
     #App Model
     'click .hit-button': ->
       @model.get('game').get('playerHand').hit()
-    'click .stand-button': -> 
+      if @model.get('game').bust(@model.get('game').get('playerHand'))
+        console.log "You have busted!"
+    'click .stand-button': ->
       @model.get('game').get('playerHand').stand()
 
   initialize: ->

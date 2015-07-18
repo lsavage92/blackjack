@@ -9,6 +9,7 @@ class window.Hand extends Backbone.Collection
       console.log "Shuffling new deck"
     nextCard = @deck.pop()
     @add(nextCard)
+    @trigger('hit', @)
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1

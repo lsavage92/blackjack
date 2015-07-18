@@ -10,6 +10,11 @@ class window.Game extends Backbone.Model
       console.log 'stand'
       @automateDealer())
 
+    @get('playerHand').on("hit", =>
+      if @bust @get('playerHand')
+        alert 'Player Bust, Dealer Win. Press okay to deal'
+        @newHand())
+
   #Automate dealer moves will be fn
   automateDealer: ->
     console.log 'automateDealer'
@@ -30,10 +35,8 @@ class window.Game extends Backbone.Model
     dealer = @get('dealerHand')
     player = @get('playerHand')
 
-    if @bust player
-      alert 'Player Bust, Dealer Win. Press okay to deal'
-      @newHand()
-    else if @bust dealer
+
+    if @bust dealer
       alert 'Dealer Bust, Player Wins! Press okay to deal'
       @newHand()
     else if @tie(player, dealer)
@@ -63,3 +66,8 @@ class window.Game extends Backbone.Model
 
     @get('playerHand').on("stand", =>
       @automateDealer())
+
+    @get('playerHand').on("hit", =>
+      if @bust @get('playerHand')
+        alert 'Player Bust, Dealer Win. Press okay to deal'
+        @newHand())

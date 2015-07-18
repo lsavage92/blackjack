@@ -6,8 +6,11 @@ class window.AppView extends Backbone.View
   '
 
   events:
-    'click .hit-button': -> @model.get('playerHand').hit()
-    'click .stand-button': -> @model.get('playerHand').stand()
+    #App Model
+    'click .hit-button': ->
+      @model.get('game').get('playerHand').hit()
+    'click .stand-button': -> 
+      @model.get('game').get('playerHand').stand()
 
   initialize: ->
     @render()
@@ -15,6 +18,8 @@ class window.AppView extends Backbone.View
   render: ->
     @$el.children().detach()
     @$el.html @template()
-    @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
-    @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+    #Creates HandView by getting properties playerHand & dealerHand from AppModel containing "Hands Collection"
+    #created from Deck Collection
+    @$('.player-hand-container').html new HandView(collection: @model.get('game').get('playerHand')).el
+    @$('.dealer-hand-container').html new HandView(collection: @model.get('game').get('dealerHand')).el
 

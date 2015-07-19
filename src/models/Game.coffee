@@ -49,7 +49,9 @@ class window.Game extends Backbone.Model
     else false
 
   determineWinner: (player, dealer) ->
-    if player.scores()[0] > dealer.scores()[0]
+    if player.scores()[0] <= 21 and player.scores()[1] <= 21 then playerScore = Math.max(player.scores[0], player.scores[1])
+    if dealer.scores()[0] <= 21 and dealer.scores()[1] <= 21 then dealerScore = Math.max(dealer.scores[0], dealer.scores[1])
+    if playerScore > dealerScore
       alert "Player Wins! Press okay to deal"
       @newHand()
     else

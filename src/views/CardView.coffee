@@ -11,6 +11,6 @@ class window.CardView extends Backbone.View
     cardRank = @model.get("rankName").toString()
     cardType = @model.get("suitName").toString()
     card = cardRank.toLowerCase() + "-" + cardType.toLowerCase()
-    @$el.css("background-image", "url(./img/cards/"+card+".png)")
     @$el.addClass 'covered' unless @model.get 'revealed'
+    @$el.css("background-image", "url(./img/cards/"+card+".png)")
 

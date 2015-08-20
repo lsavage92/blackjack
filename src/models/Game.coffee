@@ -21,7 +21,8 @@ class window.Game extends Backbone.Model
     dealer = @get('dealerHand')
     if !dealer.models[0].get('revealed') then dealer.models[0].flip()
     #if dealer is greater than 17, automatically determine outcome
-    if dealer.scores()[0] >= 17
+    if dealer.scores()[1] > 17 then dealerScore = dealer.scores()[1] else dealerScore = dealer.scores()[0]
+    if dealerScore >= 17
       @outcome()
     #if dealer is less than 17, dealer.hit()
     else
@@ -49,12 +50,13 @@ class window.Game extends Backbone.Model
     else false
 
   determineWinner: (player, dealer) ->
-    if player.scores()[0] <= 21 and player.scores()[1] <= 21 then playerScore = Math.max(player.scores[0], player.scores[1])
-    if dealer.scores()[0] <= 21 and dealer.scores()[1] <= 21 then dealerScore = Math.max(dealer.scores[0], dealer.scores[1])
+    if player.scores()[1] > 21 then playerScore = player.scores()[0] else playerScore = player.scores()[1]
+    if dealer.scores()[1] > 21 then dealerScore = dealer.scores()[0] else dealerScore = dealer.scores()[1]
     if playerScore > dealerScore
       alert "Player Wins! Press okay to deal"
       @newHand()
     else
+      console.log playerScore, dealerScore
       alert "You have lost. Press okay to deal"
       @newHand()
 
@@ -62,6 +64,9 @@ class window.Game extends Backbone.Model
     if player.scores()[0] == dealer.scores()[0] then return true
 
   newHand: ->
+    if @get('deck').length < 10
+      @set 'deck', new Deck()
+
     @set 'playerHand', @get('deck').dealPlayer() #creates new player hand via deck
     @set 'dealerHand', @get('deck').dealDealer() #creates new dealer hand via deck
     @trigger('newHand',@)
@@ -73,3 +78,6 @@ class window.Game extends Backbone.Model
       if @bust @get('playerHand')
         alert 'Player Bust, Dealer Win. Press okay to deal'
         @newHand())
+
+  #blackJack: ->
+
